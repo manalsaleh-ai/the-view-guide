@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The View — Your Guide to St. Margarets Bay</title>
+<style>
+  :root{
+    /* drawn from the view: bay water, evergreen shore, soft sky, golden light, wild rose */
+    --deep:#1f4a3d;      /* deep evergreen */
+    --tide:#356b7a;      /* bay blue-green */
+    --sea:#7fb0a3;       /* soft sage water */
+    --sky:#bcd4dd;       /* hazy sky blue */
+    --sand:#ece3d2;      /* warm shore stone */
+    --shell:#f7f4ec;     /* pale driftwood */
+    --ink:#23332f;       /* deep pine ink */
+    --mist:#6f8079;      /* misty green-grey */
+    --rope:#c98a4b;      /* golden shore light */
+    --rose:#c97b8e;      /* wild rose / lupine */
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+    background:var(--shell);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px 64px}
+  header{background:
+      radial-gradient(140% 90% at 50% -10%, rgba(188,212,221,.30), transparent 55%),
+      radial-gradient(120% 80% at 50% 110%, rgba(127,176,163,.22), transparent 60%),
+      linear-gradient(165deg,var(--deep) 0%,var(--tide) 70%,#3f7d80 100%);
+    color:var(--shell);padding:54px 24px 40px;text-align:center;position:relative;overflow:hidden}
+  header .eyebrow{font-family:'Helvetica Neue',Arial,sans-serif;text-transform:uppercase;
+    letter-spacing:.32em;font-size:.66rem;font-weight:600;opacity:.85;margin-bottom:18px}
+  header h1{font-size:2.5rem;line-height:1.05;font-weight:400;letter-spacing:.5px;margin-bottom:14px}
+  header p{font-size:1rem;opacity:.9;max-width:36ch;margin:0 auto;font-style:italic}
+  .waves{position:absolute;left:0;right:0;bottom:-1px;height:46px;display:block}
+  .sprig{position:absolute;top:14px;right:18px;width:74px;height:auto;opacity:.9;pointer-events:none}
+  @media (max-width:420px){.sprig{width:54px;top:12px;right:10px}}
+  .note{background:linear-gradient(150deg,rgba(127,176,163,.16),var(--sand));border-radius:14px;padding:22px 24px;margin:30px 0 8px;font-size:1.02rem}
+  .note strong{color:var(--deep)}
+  nav.jump{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 8px;justify-content:center}
+  nav.jump a{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.78rem;letter-spacing:.04em;
+    text-decoration:none;color:var(--deep);background:#fff;border:1px solid var(--sand);
+    padding:9px 15px;border-radius:999px;transition:.18s}
+  nav.jump a:hover,nav.jump a:focus{background:var(--deep);color:var(--shell);border-color:var(--deep)}
+  .section{margin-top:44px;scroll-margin-top:16px}
+  .section-head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .section-head .num{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.72rem;font-weight:700;
+    letter-spacing:.12em;color:var(--deep);border:1.5px solid var(--sea);background:rgba(127,176,163,.14);
+    width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+  .section-head h2{font-size:1.6rem;font-weight:400;color:var(--deep);line-height:1.1}
+  .section-sub{color:var(--mist);font-style:italic;margin:2px 0 18px 48px;font-size:.95rem}
+  .card{background:#fff;border:1px solid #ece4d6;border-radius:16px;padding:20px 20px 18px;
+    margin-bottom:16px;box-shadow:0 2px 10px rgba(17,50,77,.04)}
+  .card h3{font-size:1.2rem;font-weight:600;color:var(--ink);margin-bottom:3px}
+  .card .meta{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.78rem;color:var(--mist);
+    letter-spacing:.02em;margin-bottom:9px}
+  .card .meta .dot{margin:0 7px;opacity:.5}
+  .card p.desc{font-size:.98rem;margin-bottom:14px}
+  .actions{display:flex;flex-wrap:wrap;gap:9px}
+  .actions a{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.82rem;font-weight:500;
+    text-decoration:none;padding:8px 14px;border-radius:9px;transition:.16s;display:inline-flex;align-items:center;gap:6px}
+  .btn-dir{background:var(--tide);color:#fff}
+  .btn-dir:hover{background:var(--deep)}
+  .btn-call{background:#fff;color:var(--tide);border:1.5px solid var(--tide)}
+  .btn-call:hover{background:var(--tide);color:#fff}
+  .event{background:linear-gradient(160deg,#f7eef0,#fff);border-left:4px solid var(--rose);
+    border-radius:0 14px 14px 0;padding:16px 18px;margin-bottom:13px}
+  .event .when{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.72rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.08em;color:var(--rose);margin-bottom:4px}
+  .event h3{font-size:1.12rem;font-weight:600;margin-bottom:4px}
+  .event p{font-size:.95rem}
+  .editme{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.72rem;color:var(--rope);
+    background:#fff7ee;border:1px dashed var(--rope);border-radius:8px;padding:7px 11px;margin:14px 0 0}
+  footer{margin-top:54px;padding-top:26px;border-top:1px solid var(--sand);
+    text-align:center;color:var(--mist);font-size:.9rem}
+  footer .host{color:var(--deep);font-style:italic;font-size:1.05rem;margin-bottom:6px}
+  @media (max-width:420px){header h1{font-size:2.05rem}.section-head h2{font-size:1.4rem}.section-sub{margin-left:0}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">The View · Peggy's Cove Road</div>
+  <h1>Your Guide to<br>St. Margarets Bay</h1>
+  <p>The best of our corner of the coast — most of it minutes from the front door, perfect for a short stay.</p>
+  <svg class="sprig" viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g fill="none" stroke="rgba(247,244,236,.5)" stroke-width="1.4" stroke-linecap="round">
+      <path d="M60,66 C58,48 56,34 60,18"/>
+      <path d="M60,40 C50,36 42,30 38,22"/>
+      <path d="M60,48 C70,46 80,40 86,32"/>
+    </g>
+    <g fill="rgba(201,123,142,.85)">
+      <circle cx="60" cy="14" r="6"/><circle cx="54" cy="18" r="5"/><circle cx="66" cy="18" r="5"/>
+      <circle cx="56" cy="24" r="5"/><circle cx="64" cy="24" r="5"/>
+    </g>
+    <circle cx="60" cy="19" r="2.6" fill="rgba(201,138,75,.95)"/>
+    <g fill="rgba(201,123,142,.7)">
+      <circle cx="36" cy="20" r="3.6"/><circle cx="32" cy="22" r="3"/><circle cx="40" cy="22" r="3"/>
+      <circle cx="88" cy="30" r="3.6"/><circle cx="84" cy="32" r="3"/><circle cx="92" cy="32" r="3"/>
+    </g>
+  </svg>
+  <svg class="waves" viewBox="0 0 1200 46" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,24 C150,44 350,4 600,24 C850,44 1050,4 1200,24 L1200,46 L0,46 Z" fill="#f7f4ec"/>
+  </svg>
+</header>
+
+<div class="wrap">
+
+  <div class="note">
+    Welcome to The View! Everything here is close by — most spots a 5 to 15 minute drive along the bay. Tap <strong>Directions</strong> for the map or <strong>Call</strong> to check hours, since some local spots keep seasonal times. With just a night or two, we've kept this to our true favourites. Enjoy the bay.
+  </div>
+
+  <div class="note" style="background:#fff;border:1px solid var(--sand)">
+    This isn't an exhaustive list — just a handful of the spots we love most in our community. For more ideas during your stay, have a look at the <strong>Peggy's Cove Coastal Region Map</strong>, the <strong>Halifax 2026 Official Visitor Guide</strong>, and the <strong>Halifax Kids' Guide</strong> — hard copies are in the unit for you to browse.
+  </div>
+
+  <nav class="jump">
+    <a href="#july">What's On in July</a>
+    <a href="#coffee">For Coffee Lovers</a>
+    <a href="#eat">Eat &amp; Drink</a>
+    <a href="#fine">Fine Dining</a>
+    <a href="#waterfront">Waterfront Pints &amp; Plates</a>
+    <a href="#outdoors">Beaches &amp; Outdoors</a>
+    <a href="#family">Family Fun with Kids</a>
+    <a href="#shop">Shops &amp; Groceries</a>
+    <a href="#crafts">Local Crafts</a>
+    <a href="#daytrip">Close-By Sights</a>
+    <a href="#sixbythesea">Six by the Sea</a>
+  </nav>
+
+  <!-- ============ JULY EVENTS ============ -->
+  <section class="section" id="july">
+    <div class="section-head"><span class="num">★</span><h2>What's On in July</h2></div>
+    <p class="section-sub">Happening near the bay during your stay this month.</p>
+
+    <div class="event">
+      <div class="when">July 8 – 20 · Peggy's Cove area</div>
+      <h3>Peggy's Cove Area Festival of the Arts</h3>
+      <p>Two weeks of local art right along Peggy's Cove Road. Watch artists paint outdoors at "Paint Peggy's Cove" (July 11–13) and tour 40+ artist studios on the self-guided Studio Tour (July 18–20). Free family activities throughout.</p>
+    </div>
+
+    <div class="event">
+      <div class="when">July 7 – 12 · Halifax Waterfront</div>
+      <h3>TD Halifax Jazz Festival</h3>
+      <p>Six days of music with the main stage on the harbourfront. A great reason to pair an evening downtown with dinner by the water (about 35 min away).</p>
+    </div>
+
+    <div class="event">
+      <div class="when">July 15 – 18 · Halifax Waterfront</div>
+      <h3>LatinFax</h3>
+      <p>A free, family-friendly celebration of Latin music, food and culture on the Halifax waterfront.</p>
+    </div>
+  </section>
+
+  <!-- ============ COFFEE LOVERS ============ -->
+  <section class="section" id="coffee">
+    <div class="section-head"><span class="num">01</span><h2>For Coffee Lovers</h2></div>
+    <p class="section-sub">Where to start the morning (or pause mid-drive).</p>
+
+    <div class="card">
+      <h3>Train Station Bike &amp; Bean</h3>
+      <div class="meta">Café + bike rentals<span class="dot">•</span>★ 4.6<span class="dot">•</span>On the trail</div>
+      <p class="desc">A cool café right on the Rum Runners Trail — excellent lattes, fresh scones and a sunny back deck by the old train. Rent a bike here and ride the bay trail straight from the door.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Train+Station+Bike+and+Bean+5401+St+Margarets+Bay+Rd+Upper+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028203400">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Labour Day Picnic Café</h3>
+      <div class="meta">Café &amp; bakery<span class="dot">•</span>★ 4.8<span class="dot">•</span>En route to the Cove</div>
+      <p class="desc">A funky little café in Glen Haven with flat whites, the best cheese scones around (baked on site), and local art to browse. The ideal pause on the way to or from Peggy's Cove. (Open Wed–Sun.)</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Labour+Day+Picnic+Cafe+12286+Peggys+Cove+Rd+Glen+Haven" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028212133">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>otis &amp; clementine's</h3>
+      <div class="meta">Bookshop café<span class="dot">•</span>★ 4.8<span class="dot">•</span>Daytime</div>
+      <p class="desc">A charming used bookshop with resident cats and a coffee in hand — really one for the book and cat lovers among you. Come for the cozy shelves and the company; it's a delightful, only-in-the-Bay kind of stop, especially on a rainy afternoon.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=otis+and+clementines+5209+St+Margarets+Bay+Rd+Upper+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028261823">Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EAT & DRINK ============ -->
+  <section class="section" id="eat">
+    <div class="section-head"><span class="num">02</span><h2>Eat &amp; Drink</h2></div>
+    <p class="section-sub">Casual local favourites, all within a few minutes' drive.</p>
+
+    <div class="card">
+      <h3>The Rustic Crust</h3>
+      <div class="meta">Wood-fired pizza<span class="dot">•</span>★ 4.7<span class="dot">•</span>Outdoor seating &amp; live music</div>
+      <p class="desc">The neighbourhood gem and our top pick — delicious wood-fired pizza served at picnic tables on the lawn, with a little barn bar of local drinks and live music on warm evenings. The garlic-based pizzas are the ones to beat. It gets busy, so come early or expect a relaxed wait.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=The+Rustic+Crust+10+Sonnys+Rd+Upper+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028262866">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>White Sails Bakery &amp; Deli</h3>
+      <div class="meta">Bakery &amp; deli<span class="dot">•</span>★ 4.5<span class="dot">•</span>On Peggy's Cove Rd</div>
+      <p class="desc">A beloved family-run spot right on your road — fresh sourdough, focaccia, sandwiches and famous squares. Perfect for grabbing lunch before a drive to Peggy's Cove.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=White+Sails+Bakery+Deli+12930+Peggys+Cove+Rd+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028261966">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Delish Fine Foods</h3>
+      <div class="meta">British breakfast &amp; café<span class="dot">•</span>★ 4.8<span class="dot">•</span>Daytime</div>
+      <p class="desc">Widely loved for a proper British breakfast — the "Full Monty," fresh-baked breads, and savoury pasties. A cozy, friendly stop in Upper Tantallon.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Delish+Fine+Foods+5280+St+Margarets+Bay+Rd+Upper+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028261436">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Lefty's Restaurant &amp; Lounge</h3>
+      <div class="meta">Pub fare &amp; dinner<span class="dot">•</span>★ 4.3<span class="dot">•</span>Open late</div>
+      <p class="desc">A local go-to for hearty meals and excellent fish and chips, with a cozy, welcoming room. The reliable choice for an easy sit-down dinner nearby.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Leftys+Restaurant+3650+Hammonds+Plains+Rd+Upper+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028267978">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Maya's Favorite Fish and Chips</h3>
+      <div class="meta">Fish &amp; chips · takeout<span class="dot">•</span>★ 4.5<span class="dot">•</span>Upper Tantallon</div>
+      <p class="desc">A local favourite for fresh haddock, hand-cut fries and great scallops and onion rings — popular for takeout to bring back and enjoy by the water. There's even a real Maya behind it. Order ahead on busy days.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Mayas+Favorite+Fish+and+Chips+4+French+Village+Station+Rd+Upper+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINE DINING ============ -->
+  <section class="section" id="fine">
+    <div class="section-head"><span class="num">03</span><h2>Fine Dining</h2></div>
+    <p class="section-sub">For a special evening out by the water.</p>
+
+    <div class="card">
+      <h3>Rhubarb</h3>
+      <div class="meta">Seafood &amp; locally inspired<span class="dot">•</span>★ 4.6<span class="dot">•</span>Reservations recommended</div>
+      <p class="desc">The area's standout — a family-run restaurant in Indian Harbour with a large patio overlooking the Atlantic, just minutes from Peggy's Cove. Beautiful seafood, fresh local fare, and a celebrated weekend brunch. It's popular, so book ahead.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Rhubarb+Restaurant+8650+Peggys+Cove+Rd+Indian+Harbour" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028213013">Call</a>
+      </div>
+    </div>
+
+    <div class="editme">✎ Rhubarb is the main fine-dining spot right on the bay. For a bigger night out, Halifax's waterfront dining (about 35 min) adds more options — add your own favourites here.</div>
+  </section>
+
+  <!-- ============ WATERFRONT PINTS & PLATES ============ -->
+  <section class="section" id="waterfront">
+    <div class="section-head"><span class="num">★</span><h2>Waterfront Pints &amp; Plates</h2></div>
+    <p class="section-sub">Right on the bay at Shining Waters Marina — minutes from the house.</p>
+
+    <div class="card">
+      <h3>Saltbox Brewing Co. — Shining Waters</h3>
+      <div class="meta">Craft brewery &amp; taproom<span class="dot">•</span>★ 4.4<span class="dot">•</span>Marina patio · Wed–Sun</div>
+      <p class="desc">Our closest waterfront pint — a Saltbox taproom set right above Shining Waters Marina at the head of the bay, with a big patio overlooking the water and regular live music on warm evenings. Local craft beer, ciders and hard iced teas, plus pub-style snacks. There's even a courtesy dock if you arrive by boat. A lovely, low-key spot to watch the sun go down over St. Margarets Bay.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Saltbox+Brewery+Shining+Waters+Marina+148+Nautical+Way+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19025931575">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Scotia by the Sea</h3>
+      <div class="meta">Pub kitchen &amp; Sunday brunch<span class="dot">•</span>Waterfront view<span class="dot">•</span>At the Saltbox taproom</div>
+      <p class="desc">The cozy kitchen inside the Saltbox taproom at Shining Waters, serving a full pub menu and a popular Sunday brunch — all with the same beautiful waterfront view. Pair a plate with a Saltbox pint on the marina patio. Hours follow the taproom, so a quick call ahead is wise, especially early or late in the season.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Scotia+by+the+Sea+Shining+Waters+Marina+148+Nautical+Way+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19025931575">Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BEACHES & OUTDOORS ============ -->
+  <section class="section" id="outdoors">
+    <div class="section-head"><span class="num">04</span><h2>Beaches &amp; Outdoors</h2></div>
+    <p class="section-sub">Swim, paddle, and walk the shoreline — all on the bay.</p>
+
+    <div class="card">
+      <h3>Queensland Beach</h3>
+      <div class="meta">Provincial park<span class="dot">•</span>★ 4.6<span class="dot">•</span>Change rooms &amp; parking</div>
+      <p class="desc">One of the bay's best-loved beaches — clean fine sand, gentle waves, change rooms and washrooms. The water warms as summer goes on. Arrive early on sunny days, as parking fills and the beach shrinks at high tide.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Queensland+Beach+Provincial+Park+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Cleveland Beach</h3>
+      <div class="meta">Provincial park<span class="dot">•</span>★ 4.4<span class="dot">•</span>Sandy + warm lagoon</div>
+      <p class="desc">A white-sand beach with a unique twist: a shallow tidal lagoon just steps from the ocean that warms in the sun — lovely for a float or a paddleboard. Sunsets here are stunning.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Cleveland+Beach+Provincial+Park+Black+Point+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Micou's Island</h3>
+      <div class="meta">Nature reserve<span class="dot">•</span>★ 4.8<span class="dot">•</span>Check the tides</div>
+      <p class="desc">A tranquil island you can walk to at low tide, with a short forest loop, little beaches, and tidal pools the kids will love. A real hidden gem — check the tide chart before you go and watch your timing.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Micous+Island+Glen+Haven+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Rum Runners Trail</h3>
+      <div class="meta">Walk &amp; bike path<span class="dot">•</span>Flat &amp; scenic<span class="dot">•</span>Trailhead in Tantallon</div>
+      <p class="desc">A flat, scenic rail-trail that runs right along St. Margarets Bay — ideal for an easy walk or bike ride with water views the whole way. Rent wheels at the Bike &amp; Bean and roll straight onto the path.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Rum+Runners+Trail+Tantallon+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Hubbards Beach</h3>
+      <div class="meta">Sandy beach<span class="dot">•</span>★ 4.6<span class="dot">•</span>~20 min · showers on site</div>
+      <p class="desc">A soft-sand, family-friendly beach at the head of the bay with changing rooms, showers, and fish &amp; chips a short walk away. Worth the short drive on a warm day.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Hubbards+Beach+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAMILY FUN ============ -->
+  <section class="section" id="family">
+    <div class="section-head"><span class="num">★</span><h2>Family Fun with Kids</h2></div>
+    <p class="section-sub">Big-splash days out for the little ones — a short drive inland.</p>
+
+    <div class="card">
+      <h3>Splashifax</h3>
+      <div class="meta">Floating water park<span class="dot">•</span>★ 4.7<span class="dot">•</span>Hammonds Plains · ~25 min</div>
+      <p class="desc">Nova Scotia's first floating water park — a giant inflatable obstacle course of slides, climbing walls and trampolines (and the world's largest inflatable unicorn!) anchored on a private lake at Hatfield Farm, with lifeguards on hand. Sessions run about 100 minutes and include Coast Guard life jackets and petting-farm access. Book your session ahead online, and pack sunscreen and a towel. Open late June through summer.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Splashifax+1840+Hammonds+Plains+Rd+Hammonds+Plains" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Atlantic Splash Adventure</h3>
+      <div class="meta">Water &amp; amusement park<span class="dot">•</span>★ 3.8<span class="dot">•</span>Lucasville · ~25 min</div>
+      <p class="desc">A classic family amusement park about 20 minutes from Halifax with water slides, dry rides, go-karts and mini-golf — admission covers it all. Plenty of picnic tables, free parking and food on site. A full day's fun for kids of all ages on a warm day. Buying tickets online ahead of your visit can save a little and speeds up entry.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Atlantic+Splash+Adventure+1200+Lucasville+Rd+Hammonds+Plains" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028651025">Call</a>
+      </div>
+    </div>
+
+    <div class="editme">✎ Both are seasonal and weather-dependent — check hours and book online before you set out. Micou's Island and the bay beaches (above) are great low-key kid days too.</div>
+  </section>
+
+  <!-- ============ SHOPS ============ -->
+  <section class="section" id="shop">
+    <div class="section-head"><span class="num">05</span><h2>Shops &amp; Groceries</h2></div>
+    <p class="section-sub">For stocking up — and a stop worth making for itself.</p>
+
+    <div class="card">
+      <h3>Cavicchi's Meats</h3>
+      <div class="meta">Butcher &amp; local market<span class="dot">•</span>★ 4.7<span class="dot">•</span>On the bay road</div>
+      <p class="desc">An outstanding local butcher and market — smoked meats, fresh bread, charcuterie kits, and their own beef jerky. The perfect place to grab something great for the grill back at the house.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Cavicchis+Meats+5411+St+Margarets+Bay+Rd+Upper+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028261799">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Ryer Retail Seafood Market</h3>
+      <div class="meta">Fresh lobster &amp; seafood<span class="dot">•</span>★ 4.6<span class="dot">•</span>Indian Harbour · Closed Wed</div>
+      <p class="desc">A classic South Shore lobster shack on Peggy's Cove Road — buy live lobster, scallops, mussels and oysters fresh to cook back at the house. The friendly owners will even send you off with seawater to boil your lobster in. Bring a cooler.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.app.goo.gl/4TnECJzgHsviWYN28" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028231070">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Atlantic Superstore</h3>
+      <div class="meta">Full grocery<span class="dot">•</span>Open to 9 PM<span class="dot">•</span>Upper Tantallon</div>
+      <p class="desc">The closest full-size supermarket for a complete shop — produce, deli, bakery and pharmacy. Your easiest one-stop for everything you need for the stay.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Atlantic+Superstore+5178+St+Margarets+Bay+Rd+Upper+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028263190">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Sobeys Tantallon</h3>
+      <div class="meta">Full grocery<span class="dot">•</span>Open to 10 PM<span class="dot">•</span>Hammonds Plains Rd</div>
+      <p class="desc">A second full grocery option, open a little later, with friendly staff and fresh produce. Handy if you're arriving late or need something on the way in.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Sobeys+3650+Hammonds+Plains+Rd+Upper+Tantallon" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028261046">Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOCAL CRAFTS ============ -->
+  <section class="section" id="crafts">
+    <div class="section-head"><span class="num">06</span><h2>Local Crafts &amp; Makers</h2></div>
+    <p class="section-sub">Handmade art and treasures along Peggy's Cove Road.</p>
+
+    <div class="event">
+      <div class="when">Every Tuesday · 2 – 6 PM</div>
+      <h3>Tantallon Farmers Market</h3>
+      <p>A friendly weekly market at the United Church on St. Margarets Bay Road — local produce, baked goods, and handmade crafts from area makers. A lovely way to meet the community if your stay falls on a Tuesday.</p>
+    </div>
+
+    <div class="card">
+      <h3>Peggy's Cove Glass</h3>
+      <div class="meta">Hand-blown glass studio<span class="dot">•</span>★ 5.0<span class="dot">•</span>Seabright · Wed–Sun</div>
+      <p class="desc">A small working studio with stunning mouth-blown glass — nautical pieces, vases, ornaments and those mesmerizing patterned glass balls. You can often watch the artists at work. A one-of-a-kind keepsake.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Peggys+Cove+Glass+11452+Peggys+Cove+Rd+Seabright" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028232005">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Twelve Acre Hill Gallery</h3>
+      <div class="meta">Painting studio &amp; gallery<span class="dot">•</span>★ 5.0<span class="dot">•</span>Seabright</div>
+      <p class="desc">A quaint two-building gallery where artist Philip Hodges paints maritime landscapes — originals and prints, with the artist often on hand to chat. A lovely view from the property, too.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Twelve+Acre+Hill+Gallery+11609+Peggys+Cove+Rd+Seabright" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19022191188">Call</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Cove Gallery</h3>
+      <div class="meta">Art gallery &amp; studio<span class="dot">•</span>★ 5.0<span class="dot">•</span>Seabright</div>
+      <p class="desc">A hidden gem just off the main road in Seabright — an artist-run gallery with an ever-changing collection of paintings, prints and carvings, plus handmade jewellery. Jim the artist is often there to greet you and share the story behind the work. Friendlier prices than the Cove, too.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Cove+Gallery+20+Irwin+Hubley+Rd+Seabright+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Hags on the Hill</h3>
+      <div class="meta">Artist co-op shop<span class="dot">•</span>★ 4.8<span class="dot">•</span>At Peggy's Cove</div>
+      <p class="desc">A collective shop run by 16 local artists right at Peggy's Cove — glass, jewellery, woodwork, leather and metal art. A welcome change from the usual souvenir shop, and you may meet the maker.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Hags+on+the+Hill+104+Peggys+Point+Rd+Peggys+Cove" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028214247">Call</a>
+      </div>
+    </div>
+
+    <div class="editme">✎ Many area studios open extra hours during the Peggy's Cove Festival of the Arts (July 8–20) — a great time for the Studio Tour.</div>
+  </section>
+
+  <!-- ============ CLOSE-BY SIGHTS ============ -->
+  <section class="section" id="daytrip">
+    <div class="section-head"><span class="num">07</span><h2>Close-By Sights</h2></div>
+    <p class="section-sub">Iconic spots a short drive down the road.</p>
+
+    <div class="card">
+      <h3>Peggy's Cove</h3>
+      <div class="meta">Iconic lighthouse<span class="dot">•</span>~25 min<span class="dot">•</span>Down your own road</div>
+      <p class="desc">Nova Scotia's most famous lighthouse on dramatic granite shores — a straight shot down Peggy's Cove Road from the house. Go early morning or near sunset to skip the tour buses. Mind the dark, wet rocks near the surf.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Peggys+Cove+Lighthouse+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Swissair Flight 111 Memorial</h3>
+      <div class="meta">Memorial &amp; quiet walk<span class="dot">•</span>★ 4.8<span class="dot">•</span>Whalesback, near the Cove</div>
+      <p class="desc">A moving, peaceful memorial overlooking the ocean near Peggy's Cove, honouring the 229 lives lost in 1998. A short, easy walk from the parking lot leads to stunning views and a place for quiet reflection.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Swissair+Flight+111+Memorial+Peggys+Cove+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>SS Atlantic Heritage Park</h3>
+      <div class="meta">Heritage site &amp; walk<span class="dot">•</span>★ 5.0<span class="dot">•</span>Terence Bay · Closed Sat</div>
+      <p class="desc">A peaceful seaside park and memorial in Terence Bay marking the 1873 wreck of the SS Atlantic. An easy boardwalk and gravel trail wind past benches, picnic tables and a small interpretation centre, with lovely ocean views — a quiet, picturesque stop and a worthwhile bit of local history.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=SS+Atlantic+Heritage+Park+Terence+Bay+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+        <a class="btn-call" href="tel:+19028521557">Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SIX BY THE SEA ============ -->
+  <section class="section" id="sixbythesea">
+    <div class="section-head"><span class="num">★</span><h2>Six by the Sea</h2></div>
+    <p class="section-sub">A "village within the village" at Peggy's Cove — six restored heritage buildings.</p>
+
+    <div class="note" style="margin-top:0">
+      Right at Peggy's Cove, six historic buildings have been lovingly restored into a little cluster of cafés, galleries and shops celebrating East Coast craft and history. It's an easy, walkable add-on to your lighthouse visit — wander between them, scan the QR codes outside each to learn the area's story, and grab a bite by the sea. Most are seasonal (roughly May–October) and open daily through summer. Below are the six.
+    </div>
+
+    <div class="card">
+      <h3>Margaret's Café</h3>
+      <div class="meta">Coffee, chowder &amp; paninis<span class="dot">•</span>Light bites<span class="dot">•</span>Six by the Sea</div>
+      <p class="desc">A cozy café for coffee, seafood chowder, paninis and a sweet treat, with interiors full of Nova Scotian craftsmanship. Watch their socials for live Ceilidh music. A perfect warm-up or wind-down at the Cove.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Six+by+the+Sea+Peggys+Cove+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Hunky Dory</h3>
+      <div class="meta">Fries &amp; soft-serve<span class="dot">•</span>Takeout window<span class="dot">•</span>Six by the Sea</div>
+      <p class="desc">A cheerful takeout window for gourmet fries, poutine and soft-serve ice cream, with picnic tables overlooking the sea. The name nods to the dory fishing boats of old — an easy, fun lunch with a view.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Six+by+the+Sea+Peggys+Cove+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Holy Mackerel</h3>
+      <div class="meta">Artisan shop &amp; gifts<span class="dot">•</span>100+ local makers<span class="dot">•</span>Six by the Sea</div>
+      <p class="desc">A whimsical boutique stocked with work from over 100 Atlantic Canadian artisans — pottery, leather goods, candles, chocolates and one-of-a-kind keepsakes. The spot for a souvenir with real local soul (they ship, too).</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Six+by+the+Sea+Peggys+Cove+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Spindrift Gallery</h3>
+      <div class="meta">Art gallery<span class="dot">•</span>Free to visit<span class="dot">•</span>Six by the Sea</div>
+      <p class="desc">A beautifully renovated gallery showing fine art and photography by Atlantic Canadian artists, with an upstairs loft for an artist-in-residence. Free to wander, with historical picture postcards you can mail right from the spot.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Six+by+the+Sea+Peggys+Cove+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>The Schoolhouse</h3>
+      <div class="meta">Heritage site<span class="dot">•</span>Free, self-guided<span class="dot">•</span>Six by the Sea</div>
+      <p class="desc">Step back to 1839 in the village's tiny original schoolhouse — a free, self-guided peek at 19th-century seaside student life, where 32 children once squeezed into one room. A friendly attendant is often on hand with stories.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Six+by+the+Sea+Peggys+Cove+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Arts &amp; Culture Centre</h3>
+      <div class="meta">Performances &amp; programming<span class="dot">•</span>Six by the Sea</div>
+      <p class="desc">The sixth building rounds out the village as a space for intimate performances and cultural programming — part of the Peggy's Cove Centre for Arts &amp; Culture. Check what's on during your visit for music or an event by the water.</p>
+      <div class="actions">
+        <a class="btn-dir" href="https://maps.google.com/?q=Six+by+the+Sea+Peggys+Cove+Nova+Scotia" target="_blank" rel="noopener">→ Directions</a>
+      </div>
+    </div>
+
+    <div class="editme">✎ All six are seasonal — most open daily through summer, roughly 9 AM–6 PM. Pair with the lighthouse and Hags on the Hill (in Local Crafts) for a full Peggy's Cove afternoon.</div>
+  </section>
+
+  <footer>
+    <div class="host">However you spend your days, we hope they're memorable ones.</div>
+    <div>— Your hosts at The View &nbsp;·&nbsp; Reach us anytime by text message at 782-234-7388</div>
+  </footer>
+
+</div>
+</body>
+</html>
